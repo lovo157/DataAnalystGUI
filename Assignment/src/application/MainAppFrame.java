@@ -6,8 +6,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -15,16 +13,22 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainAppFrame extends Application {
+    private VBox mainLayout;
     private Pane currentPanel;
     private String currentUser = null;
+    private Stage mainStage;
 
     @Override
     public void start(Stage primaryStage) {
-        currentPanel = createHomePanel(primaryStage);
-        primaryStage.setTitle("App");
-        primaryStage.setScene(new Scene(currentPanel, 800, 600));
-        primaryStage.show();
+        this.mainStage = primaryStage;
 
+        mainLayout = new VBox();
+        currentPanel = createHomePanel(primaryStage);
+        mainLayout.getChildren().add(currentPanel);
+
+        primaryStage.setTitle("App");
+        primaryStage.setScene(new Scene(mainLayout, 800, 600));
+        primaryStage.show();
     }
 
     private Pane createHomePanel(Stage primaryStage) {
@@ -35,19 +39,10 @@ public class MainAppFrame extends Application {
         HBox topPanel = new HBox(10);
         Label label1 = new Label("Data Analyze Hub");
 
-        //buttons
+        // Buttons
         Button createAccountButton = new Button("Create Account");
-        //createAccountButton.setOnAction(e -> createProfile.display("create Account", "wow this is awesome"));
-
         Button loginButton = new Button("Login");
-        loginButton.setOnAction(e -> {
-            CreateLogin login = new CreateLogin(primaryStage, this);
-            boolean isSuccess = login.showLoginDialog();
-            if (isSuccess) {
-                // Handle successful login, such as switching scenes.
-            	
-            }
-        });
+        loginButton.setOnAction(e -> showLoginDialog()); // Added this to show the login dialog
 
         Button logoutButton = new Button("Logout");
         logoutButton.setVisible(false);
@@ -63,16 +58,30 @@ public class MainAppFrame extends Application {
         return panel;
     }
 
-    private void showLoginDialog(Stage primaryStage) {
-        CreateLogin login = new CreateLogin(primaryStage, this);
-        if (login.showLoginDialog()) {
-            currentUser = "username"; // Update this accordingly
-            //switchToLoggedInPanel();
+    private void showLoginDialog() {
+        CreateLogin login = new CreateLogin(mainStage, this);
+        boolean isSuccess = login.showLoginDialog();
+        if (isSuccess) {
+            switchToLoggedInPanel("username"); // Switches to the logged-in panel upon successful login
         }
     }
+
     public void switchToLoggedInPanel(String username) {
-        HomePannelLoggedIn homePanel = new HomePannelLoggedIn(username);
-        currentPanel.getChildren().setAll(homePanel.createLoggedInPanel());
+        SwitchablePanel homePanel = new HomePanelLoggedIn(this);
+        setCurrentPanel(homePanel);
+    }
+
+    public void setCurrentPanel(Pane newPanel) {
+        if (currentPanel != null) {
+            mainLayout.getChildren().remove(currentPanel);
+        }
+        currentPanel = newPanel;
+        mainLayout.getChildren().add(currentPanel);
+    }
+
+    public void switchToHomePanel() {
+        Pane homePanel = createHomePanel(mainStage);
+        setCurrentPanel(homePanel);
     }
 
     public static void main(String[] args) {

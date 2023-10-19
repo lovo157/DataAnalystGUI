@@ -1,54 +1,36 @@
 package application;
 
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.layout.*;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.geometry.Pos;
-import javafx.scene.layout.Priority;
-
 import javafx.scene.text.Font;
 
-public class HomePannelLoggedIn {
-    private String username;
+class HomePanelLoggedIn extends SwitchablePanel {
 
-    public HomePannelLoggedIn(String username) {
-        this.username = username;
+    
+
+	public HomePanelLoggedIn(MainAppFrame frame) {
+        super(frame);
+        addSpecificFeatures();
     }
 
-    public BorderPane createLoggedInPanel() {
+    @Override
+    protected void addSpecificFeatures() {
+        // layout setup
         BorderPane contentPane = new BorderPane();
 
         // title
-        Label label = new Label("Home IS IT WORKING Page");
-        label.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 32));
-        label.setAlignment(Pos.CENTER);
+        Label label = new Label("Home Page");
+        label.setFont(new Font("Arial", 32));
+        label.setAlignment(javafx.geometry.Pos.CENTER);
         contentPane.setTop(label);
 
-        // Button for username
-        Button usernameButton = new Button(username);
+        // username button
+        Button usernameButton = new Button("username");
         HBox topPanel = new HBox();
         topPanel.getChildren().add(usernameButton);
-        HBox.setHgrow(usernameButton, Priority.ALWAYS);
+        topPanel.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
         contentPane.setRight(topPanel);
-
-        // panel to display the images with titles
-//        VBox imagePanel = new VBox(5);  // 5px gap
-//
-//        String[] imageTitles = {"Title 1", "Title 2", "Title 3", "Title 4"};
-//        for (int i = 0; i < 4; i++) {
-//
-//            Label titleLabel = new Label(imageTitles[i]);
-//            titleLabel.setAlignment(Pos.CENTER);
-//
-//            imagePanel.getChildren().add(titleLabel);
-//        }
-//
-//        contentPane.setCenter(imagePanel);
-
-        return contentPane;
     }
 }
