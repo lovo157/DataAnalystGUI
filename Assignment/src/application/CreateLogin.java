@@ -29,7 +29,7 @@ public class CreateLogin {
         TextField userField = new TextField();
         userBox.getChildren().addAll(userLabel, userField);
 
-        HBox passBox = new HBox(10);
+        HBox passBox = new HBox(10); 
         Label passLabel = new Label("Password:");
         PasswordField passField = new PasswordField();
         passBox.getChildren().addAll(passLabel, passField);

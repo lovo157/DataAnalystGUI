@@ -1,19 +1,26 @@
 package application;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class GUI extends Application {
 
     Stage window;
-    Scene scene1,scene2;
+    TableView<Book> table;
+    ObservableList<Book> data = FXCollections.observableArrayList();
 
     public static void main(String[] args) {
         launch(args);
@@ -21,32 +28,63 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-       window = primaryStage;
-       
-       Label label1 = new Label("welcome to the first scence!");
+        window = primaryStage;
 
-       Button  button1 = new Button("go to scence 2");
-       button1.setOnAction(e -> window.setScene(scene1));
-       
-       //layout 1
-       VBox layout1 = new VBox(20);
-       layout1.getChildren().addAll(label1, button1);
-       scene1 = new Scene(layout1, 200, 200);
-       
-       //button 2
-       Button  button2 = new Button("go to scence 1");
-       button2.setOnAction(e -> window.setScene(scene1));
-       
-       //layout 2
-       StackPane layout2 = new StackPane();
-       layout2.getChildren().add(button2);
-       scene2 = new Scene(layout2, 600, 600);
-       
-       window.setScene(scene1);
-       window.setTitle("dick here for both");
-       window.show();
-      
-       
-       
+        Button button = new Button("Show Database");
+        button.setOnAction(e -> displayDatabase());
+
+        table = new TableView<>();
+        
+        TableColumn<Book, String> titleColumn = new TableColumn<>("Title");
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        TableColumn<Book, String> authorColumn = new TableColumn<>("Author");
+        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+
+        table.getColumns().addAll(titleColumn, authorColumn);
+
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(button, table);
+        Scene scene = new Scene(layout, 600, 600);
+
+        window.setScene(scene);
+        window.setTitle("Database Viewer");
+        window.show();
+    }
+
+    private void displayDatabase() {
+        data.clear();  // Clear existing data
+
+        String dbPath = "jdbc:sqlite:C:/Users/Isaac/Desktop/db/mydb";
+        try (Connection connection = DriverManager.getConnection(dbPath);
+             Statement statement = connection.createStatement()) {
+
+            ResultSet resultSet = statement.executeQuery("SELECT title, author FROM titles");
+            while (resultSet.next()) {
+                data.add(new Book(resultSet.getString("title"), resultSet.getString("author")));
+            }
+            table.setItems(data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class Book {
+        private String title;
+        private String author;
+
+        public Book(String title, String author) {
+            this.title = title;
+            this.author = author;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
     }
 }
