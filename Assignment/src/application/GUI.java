@@ -19,7 +19,6 @@ public class GUI extends Application {
         launch(args);
     }
 
-    sdsd
     @Override
     public void start(Stage primaryStage) throws Exception {
        window = primaryStage;
@@ -27,7 +26,7 @@ public class GUI extends Application {
        Label label1 = new Label("welcome to the first scence!");
 
        Button  button1 = new Button("go to scence 2");
-       button1.setOnAction(e -> window.setScene(scene2));
+       button1.setOnAction(e -> window.setScene(scene1));
        
        //layout 1
        VBox layout1 = new VBox(20);
