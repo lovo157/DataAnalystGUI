@@ -17,17 +17,17 @@ import javafx.stage.Stage;
 public class MainAppFrame extends Application {
     private Pane currentPanel;
     private String currentUser = null;
-    
+
     @Override
     public void start(Stage primaryStage) {
-        currentPanel = createHomePanel();
+        currentPanel = createHomePanel(primaryStage);
         primaryStage.setTitle("App");
         primaryStage.setScene(new Scene(currentPanel, 800, 600));
         primaryStage.show();
-        showLoginDialog(primaryStage);
+
     }
 
-    private Pane createHomePanel() {
+    private Pane createHomePanel(Stage primaryStage) {
         VBox panel = new VBox(10);
         panel.setPadding(new Insets(10));
 
@@ -37,10 +37,18 @@ public class MainAppFrame extends Application {
 
         //buttons
         Button createAccountButton = new Button("Create Account");
-        createAccountButton.setOnAction(e -> createProfile.display("create Account", "wow this is awesome"));
+        //createAccountButton.setOnAction(e -> createProfile.display("create Account", "wow this is awesome"));
 
         Button loginButton = new Button("Login");
-        loginButton.setOnAction(e -> showLoginDialog(null)); // Change this to handle a proper re-login mechanism
+        loginButton.setOnAction(e -> {
+            CreateLogin login = new CreateLogin(primaryStage, this);
+            boolean isSuccess = login.showLoginDialog();
+            if (isSuccess) {
+                // Handle successful login, such as switching scenes.
+            	
+            }
+        });
+
         Button logoutButton = new Button("Logout");
         logoutButton.setVisible(false);
 
@@ -51,30 +59,20 @@ public class MainAppFrame extends Application {
         Label labelText = new Label("Our Data Analyze Hub is designed to transform how you perceive social media...");
         labelText.setWrapText(true);
 
-//        ImageView imageViewNorth = new ImageView(new Image("file:Pictures/Data1.jpg"));
-//        ImageView imageViewSouth = new ImageView(new Image("file:Pictures/Data2.jpg"));
-//add images below when working
         panel.getChildren().addAll(topPanel, labelText);
         return panel;
     }
+
     private void showLoginDialog(Stage primaryStage) {
         CreateLogin login = new CreateLogin(primaryStage, this);
-        if(login.showLoginDialog()) {
+        if (login.showLoginDialog()) {
             currentUser = "username"; // Update this accordingly
-            switchToLoggedInPanel();
+            //switchToLoggedInPanel();
         }
     }
-
-    private void switchToLoggedInPanel() {
-        HomePannelLoggedIn homeLoggedIn = new HomePannelLoggedIn(currentUser);
-        currentPanel = homeLoggedIn.createLoggedInPanel();
-        
-        if (currentPanel.getScene() != null) {
-            Stage stage = (Stage) currentPanel.getScene().getWindow();
-            stage.setScene(new Scene(currentPanel, 800, 600));
-        } else {
-            System.err.println("Error: Current panel is not attached to any scene.");
-        }
+    public void switchToLoggedInPanel(String username) {
+        HomePannelLoggedIn homePanel = new HomePannelLoggedIn(username);
+        currentPanel.getChildren().setAll(homePanel.createLoggedInPanel());
     }
 
     public static void main(String[] args) {

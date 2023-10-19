@@ -23,7 +23,7 @@ public class HomePannelLoggedIn {
         BorderPane contentPane = new BorderPane();
 
         // title
-        Label label = new Label("Home Page");
+        Label label = new Label("Home IS IT WORKING Page");
         label.setFont(Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 32));
         label.setAlignment(Pos.CENTER);
         contentPane.setTop(label);
@@ -36,21 +36,18 @@ public class HomePannelLoggedIn {
         contentPane.setRight(topPanel);
 
         // panel to display the images with titles
-        VBox imagePanel = new VBox(5);  // 5px gap
-
-        // assuming the images are stored in a folder named 'Pictures' and have names like 'Data1.jpg', 'Data2.jpg', etc.
-        String[] imageTitles = {"Title 1", "Title 2", "Title 3", "Title 4"};
-        for (int i = 0; i < 4; i++) {
-//            Image image = new Image("Pictures/Data1.jpg");
-//            ImageView imageView = new ImageView(image);
-            Label titleLabel = new Label(imageTitles[i]);
-            titleLabel.setAlignment(Pos.CENTER);
-//            VBox singleImagePanel = new VBox(imageView, titleLabel);
-//            singleImagePanel.setAlignment(Pos.CENTER);
-            imagePanel.getChildren().add(titleLabel);
-        }
-
-        contentPane.setCenter(imagePanel);
+//        VBox imagePanel = new VBox(5);  // 5px gap
+//
+//        String[] imageTitles = {"Title 1", "Title 2", "Title 3", "Title 4"};
+//        for (int i = 0; i < 4; i++) {
+//
+//            Label titleLabel = new Label(imageTitles[i]);
+//            titleLabel.setAlignment(Pos.CENTER);
+//
+//            imagePanel.getChildren().add(titleLabel);
+//        }
+//
+//        contentPane.setCenter(imagePanel);
 
         return contentPane;
     }

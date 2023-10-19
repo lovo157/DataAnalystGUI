@@ -43,6 +43,7 @@ public class CreateLogin {
             if ("1".equals(userField.getText()) && "1".equals(passField.getText())) {
                 statusLabel.setText("Login successful!");
                 loginSuccess[0] = true;
+                appFrame.switchToLoggedInPanel(userField.getText()); // Switch to logged-in panel
                 dialog.close();
             } else {
                 statusLabel.setText("Login failed!");
@@ -50,9 +51,11 @@ public class CreateLogin {
         });
 
         vbox.getChildren().addAll(userBox, passBox, loginButton, statusLabel);
+
         Scene dialogScene = new Scene(vbox, 300, 200);
         dialog.setScene(dialogScene);
         dialog.showAndWait();
+
         return loginSuccess[0];
     }
 }
