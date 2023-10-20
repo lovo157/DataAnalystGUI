@@ -24,13 +24,18 @@ public class CreateLogin {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
 
+        // Set preferred width for consistency
+        final double LABEL_WIDTH = 70;  // adjust as needed
+
         HBox userBox = new HBox(10);
         Label userLabel = new Label("User:");
+        userLabel.setPrefWidth(LABEL_WIDTH);
         TextField userField = new TextField();
         userBox.getChildren().addAll(userLabel, userField);
 
         HBox passBox = new HBox(10); 
         Label passLabel = new Label("Password:");
+        passLabel.setPrefWidth(LABEL_WIDTH);
         PasswordField passField = new PasswordField();
         passBox.getChildren().addAll(passLabel, passField);
 

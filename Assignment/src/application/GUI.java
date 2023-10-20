@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class GUI extends Application {
@@ -54,21 +55,35 @@ public class GUI extends Application {
 
     private void displayDatabase() {
         data.clear();  // Clear existing data
-
+        
+       
+        
         String dbPath = "jdbc:sqlite:C:/Users/Isaac/Desktop/db/mydb";
-        try (Connection connection = DriverManager.getConnection(dbPath);
-             Statement statement = connection.createStatement()) {
+        try {
+            Class.forName("org.sqlite.JDBC");  // Load SQLite JDBC driver
+            
+            try (Connection connection = DriverManager.getConnection(dbPath);
+                 Statement statement = connection.createStatement()) {
 
-            ResultSet resultSet = statement.executeQuery("SELECT title, author FROM titles");
-            while (resultSet.next()) {
-                data.add(new Book(resultSet.getString("title"), resultSet.getString("author")));
+                ResultSet resultSet = statement.executeQuery("SELECT title, author FROM titles");
+                while (resultSet.next()) {
+                    data.add(new Book(resultSet.getString("title"), resultSet.getString("author")));
+                }
+                table.setItems(data);
+
+            } catch (SQLException e) {
+                System.out.println("Database error: " + e.getMessage());
+                e.printStackTrace();
             }
-            table.setItems(data);
-
+        } catch (ClassNotFoundException e) {
+            System.out.println("JDBC driver not found.");
+            e.printStackTrace();
         } catch (Exception e) {
+            System.out.println("Other error: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
 
     public class Book {
         private String title;
