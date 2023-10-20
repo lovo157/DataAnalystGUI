@@ -1,0 +1,13 @@
+name,username,email,date of birth,password
+John Doe,johndoe,johndoe@example.com,1985-06-12,apple
+Jane Smith,janesmith,janesmith@example.com,1990-11-05,banana
+Robert Brown,robbrown,robbrown@example.com,1978-04-15,cherry
+Emily White,emwhite,emwhite@example.com,1993-09-10,dates
+David Black,davblack,davblack@example.com,1980-02-21,grape
+Sarah Green,sargreen,sargreen@example.com,1996-12-24,lemon
+Michael Yellow,miyellow,miyellow@example.com,1987-03-31,mango
+Jessica Blue,jessblue,jessblue@example.com,1995-10-01,pear
+William Pink,wilpink,wilpink@example.com,1983-05-20,plum
+Anna Purple,annpurple,annpurple@example.com,1992-07-17,peach
+Isaac Lovo,lovo,lovo@example.com,1988-08-15,hello
+1,1,lovo@lvc,2023-10-21,1

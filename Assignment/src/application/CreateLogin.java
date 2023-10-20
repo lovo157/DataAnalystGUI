@@ -44,8 +44,12 @@ public class CreateLogin {
 
         final boolean[] loginSuccess = {false};
 
+     // Inside your CreateLogin class
+
+        UserDataHandler userDataHandler = new UserDataHandler();
+
         loginButton.setOnAction(e -> {
-            if ("1".equals(userField.getText()) && "1".equals(passField.getText())) {
+            if (userDataHandler.validateLogin(userField.getText(), passField.getText())) {
                 statusLabel.setText("Login successful!");
                 loginSuccess[0] = true;
                 appFrame.switchToLoggedInPanel(userField.getText()); // Switch to logged-in panel

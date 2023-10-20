@@ -41,6 +41,7 @@ public class MainAppFrame extends Application {
 
         // Buttons
         Button createAccountButton = new Button("Create Account");
+        createAccountButton.setOnAction(e -> createProfile.display("Create Profile", "Enter your details to create a profile."));
         Button loginButton = new Button("Login");
         loginButton.setOnAction(e -> showLoginDialog()); // Added this to show the login dialog
 

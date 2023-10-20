@@ -58,7 +58,7 @@ public class GUI extends Application {
         
        
         
-        String dbPath = "jdbc:sqlite:C:/Users/Isaac/Desktop/db/mydb";
+        String dbPath = "jdbc:sqlite:./test.db";
         try {
             Class.forName("org.sqlite.JDBC");  // Load SQLite JDBC driver
             
