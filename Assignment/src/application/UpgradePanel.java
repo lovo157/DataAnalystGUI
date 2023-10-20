@@ -89,4 +89,10 @@ public class UpgradePanel extends SwitchablePanel {
 
         return loadedPosts;
     }
+
+	@Override
+	protected void addSpecificFeatures() {
+		// TODO Auto-generated method stub
+		
+	}
 }
