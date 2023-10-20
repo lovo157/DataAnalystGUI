@@ -4,24 +4,18 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 public class GUI extends Application {
 
     Stage window;
-    TableView<Book> table;
-    ObservableList<Book> data = FXCollections.observableArrayList();
+    TableView<Post> table;
+    ObservableList<Post> data = FXCollections.observableArrayList();
+    PostDataHandler postDataHandler = new PostDataHandler();
 
     public static void main(String[] args) {
         launch(args);
@@ -31,75 +25,58 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
 
-        Button button = new Button("Show Database");
-        button.setOnAction(e -> displayDatabase());
-
         table = new TableView<>();
-        
-        TableColumn<Book, String> titleColumn = new TableColumn<>("Title");
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<Book, String> authorColumn = new TableColumn<>("Author");
+        TableColumn<Post, Integer> idColumn = new TableColumn<>("ID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setMinWidth(50);
+
+        TableColumn<Post, String> contentColumn = new TableColumn<>("Content");
+        contentColumn.setCellValueFactory(new PropertyValueFactory<>("content"));
+        contentColumn.setMinWidth(100);
+        contentColumn.setMaxWidth(400);  // Adjust as per your requirement
+
+        TableColumn<Post, String> authorColumn = new TableColumn<>("Author");
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+        authorColumn.setMinWidth(100);
 
-        table.getColumns().addAll(titleColumn, authorColumn);
+        TableColumn<Post, Integer> sharesColumn = new TableColumn<>("Shares");
+        sharesColumn.setCellValueFactory(new PropertyValueFactory<>("shares"));
+        sharesColumn.setMinWidth(60);
+
+        TableColumn<Post, Integer> likesColumn = new TableColumn<>("Likes");
+        likesColumn.setCellValueFactory(new PropertyValueFactory<>("likes"));
+        likesColumn.setMinWidth(60);
+
+        TableColumn<Post, String> dateTimeColumn = new TableColumn<>("DateTime");
+        dateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("dateTime"));
+        dateTimeColumn.setMinWidth(150);
+
+        table.getColumns().addAll(idColumn, contentColumn, authorColumn, sharesColumn, likesColumn, dateTimeColumn);
+
+        // Making the columns resize dynamically with the table view
+        idColumn.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
+        contentColumn.prefWidthProperty().bind(table.widthProperty().multiply(0.4));
+        authorColumn.prefWidthProperty().bind(table.widthProperty().multiply(0.15));
+        sharesColumn.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
+        likesColumn.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
+        dateTimeColumn.prefWidthProperty().bind(table.widthProperty().multiply(0.15));
+
+        // Load the posts automatically
+        displayPosts();
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(button, table);
-        Scene scene = new Scene(layout, 600, 600);
+        layout.getChildren().addAll(table);
+        Scene scene = new Scene(layout, 800, 600);
 
         window.setScene(scene);
-        window.setTitle("Database Viewer");
+        window.setTitle("Posts Viewer");
         window.show();
     }
 
-    private void displayDatabase() {
-        data.clear();  // Clear existing data
-        
-       
-        
-        String dbPath = "jdbc:sqlite:./test.db";
-        try {
-            Class.forName("org.sqlite.JDBC");  // Load SQLite JDBC driver
-            
-            try (Connection connection = DriverManager.getConnection(dbPath);
-                 Statement statement = connection.createStatement()) {
-
-                ResultSet resultSet = statement.executeQuery("SELECT title, author FROM titles");
-                while (resultSet.next()) {
-                    data.add(new Book(resultSet.getString("title"), resultSet.getString("author")));
-                }
-                table.setItems(data);
-
-            } catch (SQLException e) {
-                System.out.println("Database error: " + e.getMessage());
-                e.printStackTrace();
-            }
-        } catch (ClassNotFoundException e) {
-            System.out.println("JDBC driver not found.");
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Other error: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-
-    public class Book {
-        private String title;
-        private String author;
-
-        public Book(String title, String author) {
-            this.title = title;
-            this.author = author;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getAuthor() {
-            return author;
-        }
+    private void displayPosts() {
+        data.clear();
+        data.addAll(postDataHandler.getPosts());
+        table.setItems(data);
     }
 }
