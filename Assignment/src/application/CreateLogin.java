@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 public class CreateLogin {
     private Stage primaryStage;
     private MainAppFrame appFrame;
+    private String loggedInUser;  // Add this line
 
     public CreateLogin(Stage primaryStage, MainAppFrame appFrame) {
         this.primaryStage = primaryStage;
@@ -24,8 +25,7 @@ public class CreateLogin {
         VBox vbox = new VBox(10);
         vbox.setPadding(new Insets(10));
 
-        // Set preferred width for consistency
-        final double LABEL_WIDTH = 70;  // adjust as needed
+        final double LABEL_WIDTH = 70;
 
         HBox userBox = new HBox(10);
         Label userLabel = new Label("User:");
@@ -33,7 +33,7 @@ public class CreateLogin {
         TextField userField = new TextField();
         userBox.getChildren().addAll(userLabel, userField);
 
-        HBox passBox = new HBox(10); 
+        HBox passBox = new HBox(10);
         Label passLabel = new Label("Password:");
         passLabel.setPrefWidth(LABEL_WIDTH);
         PasswordField passField = new PasswordField();
@@ -44,15 +44,15 @@ public class CreateLogin {
 
         final boolean[] loginSuccess = {false};
 
-     // Inside your CreateLogin class
-
         UserDataHandler userDataHandler = new UserDataHandler();
 
         loginButton.setOnAction(e -> {
             if (userDataHandler.validateLogin(userField.getText(), passField.getText())) {
+                loggedInUser = userField.getText();  
+                appFrame.setCurrentUser(loggedInUser);  
                 statusLabel.setText("Login successful!");
                 loginSuccess[0] = true;
-                appFrame.switchToLoggedInPanel(userField.getText()); // Switch to logged-in panel
+                appFrame.switchToLoggedInPanel(loggedInUser);
                 dialog.close();
             } else {
                 statusLabel.setText("Login failed!");
@@ -66,5 +66,10 @@ public class CreateLogin {
         dialog.showAndWait();
 
         return loginSuccess[0];
+    }
+
+    // Provide a getter method for loggedInUser
+    public String getLoggedInUser() {
+        return loggedInUser;
     }
 }

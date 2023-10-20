@@ -17,14 +17,27 @@ class HomePanelLoggedIn extends SwitchablePanel {
         BorderPane contentPane = new BorderPane();
 
         // title
-        Label label = new Label("Home Page");
+        String loggedInUser = appFrame.getCurrentUser();
+        Label label = new Label(loggedInUser+ "`s home Page");
         label.setFont(new Font("Arial", 32));
+        
+        String welcomeText = "Hey there!\n"
+                + "This page was looking a bit... yawn-worthy. So, we're jazzing it up!\n"
+                + "Use the dropdown box to explore. And for our post-makers: that's your spot to add some spice!\n"
+                + "Happy browsing (and chuckling)!\n";
+
+        // Create the label with the text
+        Label welcomeLabel = new Label(welcomeText);
+
+        // Style the label (optional)
+        welcomeLabel.setStyle("-fx-padding: 20px; -fx-background-color: #f4f4f4; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-font-size: 14px;");
+        
 
         label.setAlignment(javafx.geometry.Pos.CENTER);
         contentPane.setTop(label);
 
 
         // Add the contentPane to the children of SwitchablePanel.
-        getChildren().add(contentPane);
+        getChildren().addAll(contentPane,welcomeLabel);
     }
 }

@@ -30,7 +30,9 @@ public abstract class SwitchablePanel extends VBox {
         topPanel = new HBox(switcher);
         
         // Add username feature
-        usernameButton = new Button("username");
+        String loggedInUser = appFrame.getCurrentUser();
+        		
+        usernameButton = new Button(loggedInUser);
       
         HBox userPanel = new HBox(usernameButton);
         userPanel.setAlignment(javafx.geometry.Pos.TOP_RIGHT);
@@ -43,6 +45,7 @@ public abstract class SwitchablePanel extends VBox {
 
         updateCurrentPanelLabel();
     }
+  
 
     protected abstract void addSpecificFeatures();
 

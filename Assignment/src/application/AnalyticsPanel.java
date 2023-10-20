@@ -25,8 +25,10 @@ public class AnalyticsPanel extends SwitchablePanel {
     public AnalyticsPanel(MainAppFrame appFrame) {
         super(appFrame);
 
-        // Heading
-        Label heading = new Label("Lovo's Post");
+        String loggedInUser = appFrame.getCurrentUser();
+
+        // Update heading with the logged-in user's name
+        Label heading = new Label(loggedInUser + "'s Posts");
         heading.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
 
         // Table setup
@@ -104,4 +106,8 @@ public class AnalyticsPanel extends SwitchablePanel {
     protected void addSpecificFeatures() {
         // You can implement and add any specific functionalities you want for this panel here
     }
+//    public String getCurrentUser() {
+//        return currentUser;
+//    }
+
 }

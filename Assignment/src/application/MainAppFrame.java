@@ -52,10 +52,17 @@ public class MainAppFrame extends Application {
         HBox.setHgrow(label1, Priority.ALWAYS);
         topPanel.setAlignment(Pos.CENTER_LEFT);
 
-        Label labelText = new Label("Our Data Analyze Hub is designed to transform how you perceive social media...");
-        labelText.setWrapText(true);
+        String preLoginText = "Hey future friend!\n"
+                + "Stumbled upon the COOLEST social media app, didn't you? 🎉\n"
+                + "To dive into this ocean of awesomeness, create a user and start exploring.\n"
+                + "Oh, and a little birdie told us: awesome teachers give bonus marks! 😉\n";
 
-        panel.getChildren().addAll(topPanel, labelText);
+        // Create the label with the text
+        Label preLoginLabel = new Label(preLoginText);
+
+        // Style the label (optional)
+        preLoginLabel.setStyle("-fx-padding: 20px; -fx-background-color: #e1f7d5; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-font-size: 14px;");
+        panel.getChildren().addAll(topPanel, preLoginLabel);
         return panel;
     }
 
@@ -83,6 +90,12 @@ public class MainAppFrame extends Application {
     public void switchToHomePanel() {
         Pane homePanel = createHomePanel(mainStage);
         setCurrentPanel(homePanel);
+    }
+    public String getCurrentUser() {
+        return currentUser;
+    }
+    public void setCurrentUser(String user) {
+        this.currentUser = user;
     }
 
     public static void main(String[] args) {

@@ -2,9 +2,13 @@ package application;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,9 +25,15 @@ public class UpgradePanel extends SwitchablePanel {
         super(appFrame);
 
         // Add upgrade features only after "payment"
+        
+        
         paywallButton = new Button("Subscribe for $0");
+        paywallButton.setStyle("-fx-font-size: 20px; -fx-padding: 10px 20px;"); 
         paywallButton.setOnAction(e -> handlePayment());
 
+        // Center the button using VBox
+       
+        this.setAlignment(Pos.CENTER);
         getChildren().add(paywallButton);
     }
 
@@ -36,28 +46,31 @@ public class UpgradePanel extends SwitchablePanel {
         getChildren().remove(paywallButton);
 
         // Load posts from CSV
-        posts = loadPostsFromCSV("post.csv");
+        posts = loadPostsFromCSV("bulk.csv");
 
         // Generate the pie chart
         generatePieChart();
+       
     }
 
     private void generatePieChart() {
         int lowShares = 0, medShares = 0, highShares = 0;
         for (Post post : posts) {
             int shares = post.getShares();
-            if (shares < 5) lowShares++;
-            else if (shares < 7) medShares++;
+            if (shares < 100) lowShares++;
+            else if (shares < 999) medShares++;
             else highShares++;
         }
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("0-10 shares", lowShares),
-                new PieChart.Data("10-40 shares", medShares),
-                new PieChart.Data("40+ shares", highShares));
+                new PieChart.Data("0-100 shares", lowShares),
+                new PieChart.Data("100-999 shares", medShares),
+                new PieChart.Data("1000+ shares", highShares));
         sharesChart = new PieChart(pieChartData);
         getChildren().add(sharesChart);
     }
 
+   
+    
     private List<Post> loadPostsFromCSV(String filename) {
         List<Post> loadedPosts = new ArrayList<>();
 
