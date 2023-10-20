@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 public class UpgradePanelTest extends ApplicationTest {
-
+	//Note this is straight from chatGPT this junit classes 
     private UpgradePanel upgradePanel;
     
     public void start(Stage stage) throws Exception {

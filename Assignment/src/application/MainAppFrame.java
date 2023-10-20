@@ -61,7 +61,7 @@ public class MainAppFrame extends Application {
         Label preLoginLabel = new Label(preLoginText);
 
         // Style the label (optional)
-        preLoginLabel.setStyle("-fx-padding: 20px; -fx-background-color: #e1f7d5; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-font-size: 14px;");
+        preLoginLabel.setStyle("-fx-padding: 20px; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-font-size: 14px;");
         panel.getChildren().addAll(topPanel, preLoginLabel);
         return panel;
     }
